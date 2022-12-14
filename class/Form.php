@@ -3,7 +3,7 @@
 class Form {
 
 
-    public static function are_all_posts_filled():bool {
+    public static function areAllPostsFilled():bool {
         $result = true;
     
         foreach ($_POST as $post) {
@@ -14,5 +14,5 @@ class Form {
     
         return $result;
     }
-    
+
 }
