@@ -19,6 +19,12 @@ var_dump($test);
     <title>Réservation de Salle | Accueil</title>
 </head>
 <body>
+    <?php require_once 'elements/header.php' ?>
     
+    <main>
+
+    </main>
+    
+    <?php require_once 'elements/footer.php' ?>
 </body>
 </html>
