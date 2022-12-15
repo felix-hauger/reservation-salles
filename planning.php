@@ -37,7 +37,7 @@ foreach ($week_days as $day) {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+    <?php require_once 'elements/header.php' ?>
 
     <table>
         <thead>
@@ -53,13 +53,13 @@ foreach ($week_days as $day) {
                 <tr>
                     <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
                     <?php foreach ($week_dates as $date): ?>
-                        <td>a</td>
+                        <td>-</td>
                     <?php endforeach ?>
                 </tr>
             <?php endfor ?>
         </tbody>
     </table>
 
-    
+    <?php require_once 'elements/footer.php' ?>
 </body>
 </html>
