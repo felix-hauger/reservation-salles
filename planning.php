@@ -1,10 +1,20 @@
 <?php
 
-$monday_ts = strtotime('monday this week');
+$week_days = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday'
+];
 
-$monday = date('d/m/Y', $monday_ts);
+// $monday_ts = strtotime('monday this week');
 
-var_dump($monday);
+// $monday = date('d/m/Y', $monday_ts);
+
+// var_dump($monday);
 
 ?>
 
@@ -14,8 +24,10 @@ var_dump($monday);
         <tr>
             <?php
 
-            for ($i = 0; $i < 7; $i++) {
-
+            foreach ($week_days as $day) {
+                $day_ts = strtotime($day . ' this week');
+                $day_date = date('d/m/Y', $day_ts);
+                echo '<th>' . $day_date . '</th>';
             }
 
 
