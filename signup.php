@@ -1,5 +1,30 @@
 <?php
 
+if (isset($_POST['submit'])) {
+    require_once 'functions/form_functions.php';
+    require_once 'class/Form.php';
+
+    $all_inputs_filled = Form::areAllPostsFilled();
+
+    var_dump($all_inputs_filled);
+
+    if ($all_inputs_filled) {
+        require_once 'class/DbConnection.php';
+        
+        // construct($type, $db_name, $host, $login, $password)
+        $conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+
+        $pdo = $conn->pdo();
+
+        var_dump($pdo);
+        
+        
+
+
+
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +40,7 @@
 
     <main>
         <h2>Inscription</h2>
-        <form action="post">
+        <form action="" method="post">
             <input type="text" name="login" id="login" placeholder="Identifiant">
             <input type="password" name="password" id="password" placeholder="Mot de Passe">
             <input type="submit" name="submit" value="Inscription">

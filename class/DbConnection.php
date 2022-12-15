@@ -25,3 +25,7 @@ class DbConnection {
          return $this->pdo;
     }
 }
+
+// $connect = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+
+// $pdo = $connect->$pdo();
