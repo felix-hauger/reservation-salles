@@ -1,18 +1,20 @@
 <?php
 
-class Form {
+class Form
+{
 
+    public static function areAllPostsFilled(): bool
+    {
 
-    public static function areAllPostsFilled():bool {
         $result = true;
-    
+
         foreach ($_POST as $post) {
             if ($post === '') {
                 $result = false;
+                break;
             }
         }
-    
+
         return $result;
     }
-
 }
