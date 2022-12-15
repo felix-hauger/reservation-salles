@@ -38,13 +38,14 @@ foreach ($week_days as $day) {
             <?php endforeach ?>
         </tr>
     </thead>
-    <?php
-
-    // Hours
-    for ($i = 8; $i < 18; $i++) {
-        
-    }
-
-
-    ?>
+    <tbody>
+        <?php /* Hours */ for ($i = 8; $i <= 18; $i++): ?>
+            <tr>
+                <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
+                <?php foreach ($week_dates as $date): ?>
+                    <td>a</td>
+                <?php endforeach ?>
+            </tr>
+        <?php endfor ?>
+    </tbody>
 </table>
