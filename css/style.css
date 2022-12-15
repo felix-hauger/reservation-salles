@@ -1,0 +1,19 @@
+/* PLANNING */
+
+table {
+    border-collapse: collapse;
+}
+
+table thead th {
+    background-color: #555;
+    color: #eee;
+}
+
+table th, table td {
+    width: 80px;
+    padding: 12px 8px;
+}
+
+table tr:nth-child(odd) {
+    background-color: #999;
+}

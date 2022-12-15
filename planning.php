@@ -27,25 +27,39 @@ foreach ($week_days as $day) {
 // var_dump($monday);
 
 ?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning | Réservation Salle</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
 
-<table>
-    <thead>
-        <tr>
-            <th></th>
-            <?php foreach ($week_dates as $date): ?>
-                <th><?= $date ?></th>
-            <?php endforeach ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php /* Hours */ for ($i = 8; $i <= 18; $i++): ?>
+    <table>
+        <thead>
             <tr>
-                <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
+                <th></th>
                 <?php foreach ($week_dates as $date): ?>
-                    <td>a</td>
+                    <th><?= $date ?></th>
                 <?php endforeach ?>
             </tr>
-        <?php endfor ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php /* Hours */ for ($i = 8; $i <= 18; $i++): ?>
+                <tr>
+                    <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
+                    <?php foreach ($week_dates as $date): ?>
+                        <td>a</td>
+                    <?php endforeach ?>
+                </tr>
+            <?php endfor ?>
+        </tbody>
+    </table>
+
+    
+</body>
+</html>
