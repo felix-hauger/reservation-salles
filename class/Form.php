@@ -17,4 +17,14 @@ class Form
 
         return $result;
     }
+
+    public static function passConfirm($password, $confirmation): bool
+    {
+        if ($password === $confirmation) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }
