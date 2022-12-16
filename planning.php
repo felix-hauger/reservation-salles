@@ -15,10 +15,10 @@ $week_days = [
 // will contains dates of the current week
 $week_dates = [];
 
-// convert week days to unix timestamp of the current week, format it then append it to the $week_dates array
+// convert week days using datetime for the current week, format it then append it to the $week_dates array
 foreach ($week_days as $day) {
-    $day_ts = strtotime($day . ' this week');
-    $day_date = date('d/m/Y', $day_ts);
+    $day_date_time = new DateTime($day . ' this week');
+    $day_date = $day_date_time->format('d/m/Y');
     $week_dates[] = $day_date;
 }
 
@@ -40,8 +40,14 @@ $select = $pdo->prepare($sql);
 
 $select->execute();
 
-$result = $select->fetchAll(PDO::FETCH_OBJ);
-var_dump($result);
+$bookings = $select->fetchAll(PDO::FETCH_OBJ);
+
+// var_dump($bookings);
+// $start = new DateTime($bookings[0]->{'start'});
+// var_dump($start);
+// $start_hour = $start->format('H');
+// var_dump($start_hour);
+// var_dump($bookings[0]->{'start'}->format('H'));
 
 ?>
 <!DOCTYPE html>
@@ -70,7 +76,22 @@ var_dump($result);
                 <tr>
                     <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
                     <?php foreach ($week_dates as $date): ?>
-                        <td>-</td>
+                        <td>-
+                            <?php
+                            foreach ($bookings as $booking) {
+                                $start = new DateTime($booking->{'start'});
+                                $start_day = $start->format('d/m/Y');
+                                $start_hour = $start->format('H');
+                                // var_dump($start_hour);
+                                // var_dump($i);
+                                // var_dump($start);
+                                if ($start_day == $date && $start_hour == $i) {
+                                    echo $booking->{'title'};
+
+                                }
+                            }
+                            ?>
+                        </td>
                     <?php endforeach ?>
                 </tr>
             <?php endfor ?>
