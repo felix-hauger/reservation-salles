@@ -76,9 +76,10 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
                 <tr>
                     <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
                     <?php foreach ($week_dates as $date): ?>
-                        <td>-
+                        <td>
                             <?php
                             foreach ($bookings as $booking) {
+                                $html = '<a href="booking-form.php">Réserver un créneau</a>';
                                 $start = new DateTime($booking->{'start'});
                                 $start_day = $start->format('d/m/Y');
                                 $start_hour = $start->format('H');
@@ -86,10 +87,11 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
                                 // var_dump($i);
                                 // var_dump($start);
                                 if ($start_day == $date && $start_hour == $i) {
-                                    echo $booking->{'title'};
-
+                                    $html = '<a href="booking.php?id=' .$booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
+                                    break;
                                 }
                             }
+                            echo $html;
                             ?>
                         </td>
                     <?php endforeach ?>
@@ -97,7 +99,7 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
             <?php endfor ?>
         </tbody>
     </table>
-
     <?php require_once 'elements/footer.php' ?>
+    
 </body>
 </html>
