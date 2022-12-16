@@ -1,5 +1,7 @@
 <?php
 
+require_once 'class/DbConnection.php';
+
 $week_days = [
     'monday',
     'tuesday',
@@ -25,6 +27,21 @@ foreach ($week_days as $day) {
 // $monday = date('d/m/Y', $monday_ts);
 
 // var_dump($monday);
+
+// Planning
+
+$connect = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+
+$pdo = $connect->pdo();
+
+$sql = 'SELECT bookings.id, title, description, start, end, login as user FROM bookings INNER JOIN users ON bookings.user_id = users.id';
+
+$select = $pdo->prepare($sql);
+
+$select->execute();
+
+$result = $select->fetchAll(PDO::FETCH_OBJ);
+var_dump($result);
 
 ?>
 <!DOCTYPE html>
