@@ -1,6 +1,7 @@
 <?php
 
-class DbConnection {
+class DbConnection
+{
 
     private $type;
     private $db_name;
@@ -20,11 +21,13 @@ class DbConnection {
 
     public function pdo()
     {
-         $this->pdo = new PDO ($this->type . ':dbname=' . $this->db_name . ';host=' . $this->host . ';charset=utf8mb4', $this->login, $this->password);
+        $this->pdo = new PDO($this->type . ':dbname=' . $this->db_name . ';host=' . $this->host . ';charset=utf8mb4', $this->login, $this->password);
 
-         return $this->pdo;
+        return $this->pdo;
     }
 }
+
+// EXAMPLE
 
 // $connect = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
 
