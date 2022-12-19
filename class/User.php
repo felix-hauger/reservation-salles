@@ -10,7 +10,7 @@ class User
 
     private $password;
 
-    public static function isUserInDb($login, $pdo): bool
+    public static function isLoginInDb($login, $pdo): bool
     {
         // count number of rows
         $sql = 'SELECT COUNT(id) from users WHERE login LIKE :login';
