@@ -17,10 +17,14 @@ $week_dates = [];
 
 // convert week days using datetime for the current week, format it then append it to the $week_dates array
 foreach ($week_days as $day) {
-    $day_date_time = new DateTime($day . ' this week');
-    $day_date = $day_date_time->format('d/m/Y');
-    $week_dates[] = $day_date;
+    $day_datetime = new DateTime($day . ' this week 7am');
+    $timezone = new DateTimeZone('Europe/Paris');
+    $day_datetime->setTimezone($timezone);
+    // $day_date = $day_date_time->format('d/m/Y');
+    $week_dates[] = $day_datetime;
 }
+
+// var_dump($week_dates);
 
 // $monday_ts = strtotime('monday this week');
 
@@ -52,6 +56,7 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,6 +64,7 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
     <title>Planning | Réservation Salle</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <?php require_once 'elements/header.php' ?>
 
@@ -66,28 +72,27 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
         <thead>
             <tr>
                 <th></th>
-                <?php foreach ($week_dates as $date): ?>
-                    <th><?= $date ?></th>
+                <?php foreach ($week_dates as $date) : ?>
+                    <th><?= $date->format('d/m/Y') ?></th>
                 <?php endforeach ?>
             </tr>
         </thead>
         <tbody>
-            <?php /* Hours */ for ($i = 8; $i <= 18; $i++): ?>
+            <?php /* Hours */ for ($i = 8; $i <= 18; $i++) : ?>
+
                 <tr>
-                    <td><?= $i . 'h - ' . $i+1 . 'h' ?></td>
-                    <?php foreach ($week_dates as $date): ?>
+                    <td><?= $i . 'h - ' . $i + 1 . 'h' ?></td>
+                    <?php foreach ($week_dates as $date) : ?>
                         <td>
                             <?php
+                            $date_compare = $date->modify('+ 1 hours');
                             foreach ($bookings as $booking) {
                                 $html = '<a href="booking-form.php">Réserver un créneau</a>';
                                 $start = new DateTime($booking->{'start'});
-                                $start_day = $start->format('d/m/Y');
-                                $start_hour = $start->format('H');
-                                // var_dump($start_hour);
-                                // var_dump($i);
-                                // var_dump($start);
-                                if ($start_day == $date && $start_hour == $i) {
-                                    $html = '<a href="booking.php?id=' .$booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
+                                $end = new DateTime($booking->{'end'});
+
+                                if ($date_compare >= $start && $date_compare <= $end) {
+                                    $html = '<a href="booking.php?id=' . $booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
                                     break;
                                 }
                             }
@@ -100,6 +105,7 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
         </tbody>
     </table>
     <?php require_once 'elements/footer.php' ?>
-    
+
 </body>
+
 </html>
