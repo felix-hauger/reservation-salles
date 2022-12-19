@@ -71,13 +71,14 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
                         <td>
                             <?php
 
-                            $date_compare = $date->modify('+ 1 hours');
+                            $date_compare = $date->modify('+ 1 hour');
 
                             foreach ($bookings as $booking) {
                                 $start = new DateTime($booking->{'start'});
                                 $end = new DateTime($booking->{'end'});
 
-                                if ($date_compare >= $start && $date_compare <= $end) {
+                                // remove 1 hour because the timeslots are $i to $i + 1
+                                if ($date_compare >= $start && $date_compare <= $end->modify('- 1 hour')) {
                                     $html = '<a href="booking.php?id=' . $booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
                                     break;
                                 } else {
