@@ -15,22 +15,13 @@ $week_days = [
 // will contains dates of the current week
 $week_dates = [];
 
-// convert week days using datetime for the current week, format it then append it to the $week_dates array
+// convert week days using datetime for the current week, set min hour -1 & timezone then append it to $week_dates array
 foreach ($week_days as $day) {
     $day_datetime = new DateTime($day . ' this week 7am');
     $timezone = new DateTimeZone('Europe/Paris');
     $day_datetime->setTimezone($timezone);
-    // $day_date = $day_date_time->format('d/m/Y');
     $week_dates[] = $day_datetime;
 }
-
-// var_dump($week_dates);
-
-// $monday_ts = strtotime('monday this week');
-
-// $monday = date('d/m/Y', $monday_ts);
-
-// var_dump($monday);
 
 // Planning
 
@@ -46,12 +37,6 @@ $select->execute();
 
 $bookings = $select->fetchAll(PDO::FETCH_OBJ);
 
-// var_dump($bookings);
-// $start = new DateTime($bookings[0]->{'start'});
-// var_dump($start);
-// $start_hour = $start->format('H');
-// var_dump($start_hour);
-// var_dump($bookings[0]->{'start'}->format('H'));
 
 ?>
 <!DOCTYPE html>
@@ -73,7 +58,7 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
             <tr>
                 <th></th>
                 <?php foreach ($week_dates as $date) : ?>
-                    <th><?= $date->format('d/m/Y') ?></th>
+                    <th><?= $date->format('d/m/Y') // display formated date from array ?></th>
                 <?php endforeach ?>
             </tr>
         </thead>
@@ -81,19 +66,22 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
             <?php /* Hours */ for ($i = 8; $i <= 18; $i++) : ?>
 
                 <tr>
-                    <td><?= $i . 'h - ' . $i + 1 . 'h' ?></td>
+                    <td><?= $i . 'h - ' . $i + 1 . 'h' // display hours on the left column ?></td>
                     <?php foreach ($week_dates as $date) : ?>
                         <td>
                             <?php
+
                             $date_compare = $date->modify('+ 1 hours');
+
                             foreach ($bookings as $booking) {
-                                $html = '<a href="booking-form.php">Réserver un créneau</a>';
                                 $start = new DateTime($booking->{'start'});
                                 $end = new DateTime($booking->{'end'});
 
                                 if ($date_compare >= $start && $date_compare <= $end) {
                                     $html = '<a href="booking.php?id=' . $booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
                                     break;
+                                } else {
+                                    $html = '<a href="booking-form.php">Réserver un créneau</a>';
                                 }
                             }
                             echo $html;
