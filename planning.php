@@ -82,7 +82,13 @@ $bookings = $select->fetchAll(PDO::FETCH_OBJ);
                                     $html = '<a href="booking.php?id=' . $booking->{'id'} . '">' . $booking->{'user'} . '<br />' . $booking->{'title'} . '</a>';
                                     break;
                                 } else {
-                                    $html = '<a href="booking-form.php">Réserver un créneau</a>';
+                                    // users must book at least 2 hours ahead
+                                    $min_early_booking_time = new DateTime('now + 2 hours');
+                                    if ($date_compare >= $min_early_booking_time) {
+                                        $html = '<a href="booking-form.php">Réserver un créneau</a>';
+                                    } else {
+                                        $html = '-';
+                                    }
                                 }
                             }
                             echo $html;
