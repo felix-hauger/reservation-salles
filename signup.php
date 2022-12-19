@@ -14,6 +14,7 @@ if (isset($_POST['submit'])) {
         // ENT_QUOTES to convert simple & double quotes
         $input_login = htmlspecialchars(trim($_POST['login']), ENT_QUOTES, 'UTF-8');
         $input_password = htmlspecialchars(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
+        $input_password_confirmation = htmlspecialchars(trim($_POST['password-confirmation']), ENT_QUOTES, 'UTF-8');
 
         require_once 'class/DbConnection.php';
         
@@ -22,13 +23,31 @@ if (isset($_POST['submit'])) {
 
         $pdo = $conn->pdo();
 
+        $user_is_in_db = User::isLoginInDb($input_login, $pdo);
 
-
-        $user_is_in_db = User::isUserInDb($input_login, $pdo);
+        $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirmation);
 
         var_dump($pdo);
         
-        
+
+
+        if (!$user_is_in_db && $passwords_are_equals) {
+
+            $options = ['cost' => 10];
+
+            $hashed_password = password_hash($input_password, PASSWORD_DEFAULT, $options);
+
+            $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
+
+            $insert = $pdo->prepare($sql);
+            
+            $insert->bindParam(':login', $input_login);
+            $insert->bindParam(':password', $hashed_password);
+
+            $insert->execute();
+
+            // header('Location: signin.php');
+        }
 
 
 
@@ -53,6 +72,7 @@ if (isset($_POST['submit'])) {
         <form action="" method="post">
             <input type="text" name="login" id="login" placeholder="Identifiant">
             <input type="password" name="password" id="password" placeholder="Mot de Passe">
+            <input type="password" name="password-confirmation" id="password-confirmation" placeholder="Mot de Passe">
             <input type="submit" name="submit" value="Inscription">
         </form>
     </main>
