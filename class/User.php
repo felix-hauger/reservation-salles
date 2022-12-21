@@ -13,7 +13,7 @@ class User
     public static function isLoginInDb($login, $pdo): array
     {
         // count number of rows
-        $sql = 'SELECT COUNT(id) from users WHERE login LIKE :login';
+        $sql = 'SELECT COUNT(id) FROM users WHERE login LIKE :login';
 
         $select = $pdo->prepare($sql);
 

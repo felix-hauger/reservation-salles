@@ -18,12 +18,19 @@ class Form
         return $result;
     }
 
-    public static function passConfirm($password, $confirmation): bool
+    public static function passConfirm($password, $confirmation): array
     {
         if ($password === $confirmation) {
-            return true;
+            // return true;
+            return [
+                'bool' => true,
+            ];
         } else {
-            return false;
+            // return false;
+            return [
+                'bool' => false,
+                'err'  => ' Champs des Mots de Passe différents.'
+            ];
         }
 
     }

@@ -73,11 +73,25 @@ if (isset($_POST['submit'])) {
         <h2>Inscription</h2>
         <form action="" method="post">
             <input type="text" name="login" id="login" placeholder="Identifiant">
-            <?php if ($user_is_in_db['bool']): ?>
-                <p class="error-msg"><?= $user_is_in_db['err'] ?></p>
-            <?php endif ?>
+
+            <?php
+            if (isset($user_is_in_db)) {
+                if ($user_is_in_db['bool'] === true) {
+                    echo '<p class="error-msg">' . $user_is_in_db['err'] . '</p>';
+                }
+            }
+            ?>
+
             <input type="password" name="password" id="password" placeholder="Mot de Passe">
             <input type="password" name="password-confirmation" id="password-confirmation" placeholder="Mot de Passe">
+            <?php
+            if (isset($passwords_are_equals)) {
+                if ($passwords_are_equals['bool'] === false) {
+                    echo '<p class="error-msg">' . $passwords_are_equals['err'] . '</p>';
+                }
+            }
+            ?>
+
             <input type="submit" name="submit" value="Inscription">
         </form>
     </main>
