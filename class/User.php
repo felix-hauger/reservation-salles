@@ -10,7 +10,7 @@ class User
 
     private $password;
 
-    public static function isLoginInDb($login, $pdo): bool
+    public static function isLoginInDb($login, $pdo): array
     {
         // count number of rows
         $sql = 'SELECT COUNT(id) from users WHERE login LIKE :login';
@@ -26,9 +26,17 @@ class User
 
         // if $num of rows is 0 login is not in db
         if ($num === 0) {
-            $result = false;
+            // $result = false;
+            $result = [
+                'bool' => false,
+                'err'  => 'L\'utilisateur n\'existe pas.'
+            ];
         } else {
-            $result = true;
+            // $result = true;
+            $result = [
+                'bool' => true,
+                'err'  => 'L\'utilisateur existe déjà.'
+            ];
         }
 
         return $result;

@@ -26,12 +26,14 @@ if (isset($_POST['submit'])) {
         $user_is_in_db = User::isLoginInDb($input_login, $pdo);
 
         $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirmation);
+        
+        var_dump($user_is_in_db, $passwords_are_equals);
 
         var_dump($pdo);
         
 
 
-        if (!$user_is_in_db && $passwords_are_equals) {
+        if (!$user_is_in_db['bool'] && $passwords_are_equals['bool']) {
 
             $options = ['cost' => 10];
 
@@ -71,6 +73,9 @@ if (isset($_POST['submit'])) {
         <h2>Inscription</h2>
         <form action="" method="post">
             <input type="text" name="login" id="login" placeholder="Identifiant">
+            <?php if ($user_is_in_db['bool']): ?>
+                <p class="error-msg"><?= $user_is_in_db['err'] ?></p>
+            <?php endif ?>
             <input type="password" name="password" id="password" placeholder="Mot de Passe">
             <input type="password" name="password-confirmation" id="password-confirmation" placeholder="Mot de Passe">
             <input type="submit" name="submit" value="Inscription">
