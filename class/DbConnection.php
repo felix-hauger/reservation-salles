@@ -8,7 +8,7 @@ class DbConnection
     private $host;
     private $login;
     private $password;
-    private $pdo;
+    protected $pdo;
 
     public function __construct($type, $db_name, $host, $login, $password)
     {
