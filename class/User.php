@@ -10,7 +10,7 @@ class User// extends DbConnection
     private $_id;
     private $_login;
     private $_password;
-    public Array $_errors = [];
+    private Array $_errors = [];
 
     public function __construct(PDO $db, $login, $password)
     {
@@ -21,7 +21,7 @@ class User// extends DbConnection
 
     public function register()
     {
-        if (self::isLoginInDb($this->_login, $this->_db)['bool'] === false) {
+        if (self::isLoginInDb($this->_login, $this->_db) === false) {
             $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
             $select = $this->_db->prepare($sql);
 
@@ -32,6 +32,9 @@ class User// extends DbConnection
             $select->bindParam(':password', $hashed_password);
 
             $select->execute();
+        } else {
+            $this->_errors['login-taken'] = 'Login déjà pris';
+            // throw new Exception('Login déjà pris');
         }
     }
     
@@ -57,6 +60,8 @@ class User// extends DbConnection
                 return $user_infos;
             }
         }
+
+        $this->_errors['credentials'] = 'Identifiants incorrects.'; 
         return false;
     }
 
@@ -84,8 +89,7 @@ class User// extends DbConnection
         return $this->_errors;
     }
 
-
-    public static function isLoginInDb($login, $pdo): array
+    public static function isLoginInDb($login, $pdo): bool
     {
         // count number of rows
         $sql = 'SELECT COUNT(id) FROM users WHERE login LIKE :login';
@@ -101,17 +105,17 @@ class User// extends DbConnection
 
         // if $num of rows is 0 login is not in db
         if ($num === 0) {
-            // $result = false;
-            $result = [
-                'bool' => false,
-                'err'  => 'L\'utilisateur n\'existe pas.'
-            ];
+            $result = false;
+            // $result = [
+            //     'bool' => false,
+            //     'err'  => 'L\'utilisateur n\'existe pas.'
+            // ];
         } else {
-            // $result = true;
-            $result = [
-                'bool' => true,
-                'err'  => 'L\'utilisateur existe déjà.'
-            ];
+            $result = true;
+            // $result = [
+            //     'bool' => true,
+            //     'err'  => 'L\'utilisateur existe déjà.'
+            // ];
         }
 
         return $result;

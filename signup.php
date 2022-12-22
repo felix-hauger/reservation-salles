@@ -5,6 +5,7 @@
 // $pdo = $conn->pdo();
 // $test = new User($pdo, 'test', 'test');
 // var_dump($test->{'_errors'});
+$errors = [];
 if (isset($_POST['submit'])) {
     require_once 'functions/form_functions.php';
     require_once 'class/Form.php';
@@ -12,7 +13,7 @@ if (isset($_POST['submit'])) {
 
     $all_inputs_filled = Form::areAllPostsFilled();
 
-    var_dump($all_inputs_filled);
+    // var_dump($all_inputs_filled);
 
     if ($all_inputs_filled) {
 
@@ -31,38 +32,58 @@ if (isset($_POST['submit'])) {
         $create_user = new User($pdo, $input_login, $input_password);
 
         
-        // $user_is_in_db = User::isLoginInDb($input_login, $pdo);
+        // if (!User::isLoginInDb($input_login, $pdo)) {
+        //     $login_ok = true;
+        // } else {
+        //     $login_ok = false;
+        //     $errors['login-taken'] = 'Login déjà pris.';
+        // }
+
+        // if (Form::passConfirm($input_password, $input_password_confirmation)) {
+        //     $password_ok = true;
+        // } else {
+        //     $password_ok = false;
+        //     $errors['password-differents'] = 'Champs des Mots de Passe différents.';
+        // }
         
         $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirmation);
         
         // var_dump($user_is_in_db, $passwords_are_equals);
         
-        var_dump($pdo);
         
-        
-        
-        if (/*!$user_is_in_db['bool'] && */$passwords_are_equals['bool']) {
+        if ($passwords_are_equals) {
             $create_user->register();
-
-            // $options = ['cost' => 10];
-
-            // $hashed_password = password_hash($input_password, PASSWORD_DEFAULT, $options);
-
-            // $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
-
-            // $insert = $pdo->prepare($sql);
-            
-            // $insert->bindParam(':login', $input_login);
-            // $insert->bindParam(':password', $hashed_password);
-
-            // $insert->execute();
-
             // header('Location: signin.php');
+        } 
+
+        // test if error array in instanciated User object is not empty
+        if ($create_user->getErrors()) {
+
+            // store errors in temp variable
+            $user_errors = $create_user->getErrors();
+
+            // then store them in errors var of the current page
+            foreach ($user_errors as $id => $err) {
+                $errors[$id] = $err;
+            }
+            // var_dump($errors);
         }
 
-
-
+    } else {
+        $errors['unfilled-inputs'] = 'Veuillez remplir tous les champs';
     }
+
+    // if (Form::getErrors() || $create_user->getErrors()) {
+    //     var_dump(Form::getErrors(), $create_user->getErrors());
+    // }
+    if (Form::getErrors()) {
+        $form_errors = Form::getErrors();
+
+        foreach ($form_errors as $id => $err) {
+            $errors[$id] = $err;
+        }
+    }
+    var_dump($errors);
 }
 
 ?>
@@ -82,26 +103,20 @@ if (isset($_POST['submit'])) {
         <h2>Inscription</h2>
         <form action="" method="post">
             <input type="text" name="login" id="login" placeholder="Identifiant">
-
-            <?php
-            if (isset($user_is_in_db)) {
-                if ($user_is_in_db['bool'] === true) {
-                    echo '<p class="error-msg">' . $user_is_in_db['err'] . '</p>';
-                }
-            }
-            ?>
-
+            <?php if (isset($errors['login-taken'])): ?>
+                <p class="error-msg"><?= $errors['login-taken'] ?></p>
+            <?php endif ?>
+            
             <input type="password" name="password" id="password" placeholder="Mot de Passe">
             <input type="password" name="password-confirmation" id="password-confirmation" placeholder="Mot de Passe">
-            <?php
-            if (isset($passwords_are_equals)) {
-                if ($passwords_are_equals['bool'] === false) {
-                    echo '<p class="error-msg">' . $passwords_are_equals['err'] . '</p>';
-                }
-            }
-            ?>
-
+            <?php if (isset($errors['login-taken'])): ?>
+                <p class="error-msg"><?= $errors['login-taken'] ?></p>
+            <?php endif ?>
+            
             <input type="submit" name="submit" value="Inscription">
+            <?php if (isset($errors['login-taken'])): ?>
+                <p class="error-msg"><?= $errors['login-taken'] ?></p>
+            <?php endif ?>
         </form>
     </main>
 
