@@ -36,6 +36,11 @@ class User// extends DbConnection
      */
     private Array $_errors = [];
 
+    /**
+     * @var object to store user infos
+     */
+    private $_infos;
+
     public function __construct(PDO $db, $login, $password)
     {
         $this->_db = $db;
@@ -65,9 +70,18 @@ class User// extends DbConnection
         }
     }
     
+    /**
+     * for user to log in
+     */
     public function signIn()
     {
+        $user = $this->checkCredentials();
+        // var_dump($user);
 
+        if ($user) {
+           $this->setID($user->{'id'});
+           echo $this->getID();
+        }
     }
 
     /**
@@ -77,8 +91,8 @@ class User// extends DbConnection
     public function checkCredentials()
     {
         
-        if (self::isLoginInDb($this->_login, $this->_pdo)['bool'] === true) {
-            $sql = 'SELECT login, password FROM users WHERE login = :login';
+        if (self::isLoginInDb($this->_login, $this->_db)) {
+            $sql = 'SELECT id, login, password FROM users WHERE login = :login';
             $select = $this->_db->prepare($sql);
 
             $select->bindParam(':login', $this->_login);
@@ -88,6 +102,7 @@ class User// extends DbConnection
             $user_infos = $select->fetch(PDO::FETCH_OBJ);
             $submitted_pass = $this->_password;
             if ($submitted_pass === $user_infos->{'password'} || password_verify($this->_password, $user_infos->{'password'})) {
+                echo 'toto';
                 return $user_infos;
             }
         }
@@ -98,6 +113,10 @@ class User// extends DbConnection
 
     public function getID() {
         return $this->_id;
+    }
+
+    public function setID($id) {
+        $this->_id = $id;
     }
     
     public function getLogin() {
@@ -168,3 +187,11 @@ class User// extends DbConnection
 
 // var_dump($test); // will return true or false
 
+
+$conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+
+$pdo = $conn->pdo();
+
+$user = new User($pdo, 'admin', 'admin');
+
+$user->signIn();
