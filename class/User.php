@@ -33,8 +33,8 @@ class User// extends DbConnection
 
             $select->execute();
         } else {
-            $this->_errors['login-taken'] = 'Login déjà pris';
-            // throw new Exception('Login déjà pris');
+            // $this->_errors['login-taken'] = 'Login déjà pris';
+            throw new Exception('Login déjà pris');
         }
     }
     
@@ -61,7 +61,7 @@ class User// extends DbConnection
             }
         }
 
-        $this->_errors['credentials'] = 'Identifiants incorrects.'; 
+        //$this->_errors['credentials'] = 'Identifiants incorrects.'; 
         return false;
     }
 
