@@ -1,15 +1,39 @@
 <?php
 
 // construct($type, $db_name, $host, $login, $password)
+
 require_once 'DbConnection.php';
+/**
+ * Class User
+ * 
+ * Handles User service including register & login functions
+ */
 
 class User// extends DbConnection
 {
-
+    /**
+     * @var PDO used to init connection to database
+     */
     private $_db;
+
+    /**
+     * @var int used to get users infos from db
+     */
     private $_id;
+
+    /**
+     * @var string used to register, log in and modify user informations
+     */
     private $_login;
+
+    /**
+     * @var string used to register, log in and modify user informations
+     */
     private $_password;
+
+    /**
+     * @var array used to store errors from class methods
+     */
     private Array $_errors = [];
 
     public function __construct(PDO $db, $login, $password)
@@ -19,6 +43,9 @@ class User// extends DbConnection
         $this->_password = $password;
     }
 
+    /**
+     * to register a new user to the database
+     */
     public function register()
     {
         if (self::isLoginInDb($this->_login, $this->_db) === false) {
@@ -43,6 +70,10 @@ class User// extends DbConnection
 
     }
 
+    /**
+     * used to check if user credentials are correct
+     * @return object or boolean 
+     */
     public function checkCredentials()
     {
         
@@ -89,6 +120,11 @@ class User// extends DbConnection
         return $this->_errors;
     }
 
+    /**
+     * used to check if login already exists in database
+     * @param $login string 
+     * @param $pdo PDO
+     */
     public static function isLoginInDb($login, $pdo): bool
     {
         // count number of rows
