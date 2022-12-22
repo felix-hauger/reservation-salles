@@ -1,5 +1,10 @@
 <?php
-
+// require_once 'class/DbConnection.php';
+// require_once 'class/User.php';
+// $conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+// $pdo = $conn->pdo();
+// $test = new User($pdo, 'test', 'test');
+// var_dump($test->{'_errors'});
 if (isset($_POST['submit'])) {
     require_once 'functions/form_functions.php';
     require_once 'class/Form.php';
@@ -23,30 +28,34 @@ if (isset($_POST['submit'])) {
 
         $pdo = $conn->pdo();
 
-        $user_is_in_db = User::isLoginInDb($input_login, $pdo);
+        $create_user = new User($pdo, $input_login, $input_password);
 
+        
+        // $user_is_in_db = User::isLoginInDb($input_login, $pdo);
+        
         $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirmation);
         
-        var_dump($user_is_in_db, $passwords_are_equals);
-
+        // var_dump($user_is_in_db, $passwords_are_equals);
+        
         var_dump($pdo);
         
+        
+        
+        if (/*!$user_is_in_db['bool'] && */$passwords_are_equals['bool']) {
+            $create_user->register();
 
+            // $options = ['cost' => 10];
 
-        if (!$user_is_in_db['bool'] && $passwords_are_equals['bool']) {
+            // $hashed_password = password_hash($input_password, PASSWORD_DEFAULT, $options);
 
-            $options = ['cost' => 10];
+            // $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
 
-            $hashed_password = password_hash($input_password, PASSWORD_DEFAULT, $options);
-
-            $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
-
-            $insert = $pdo->prepare($sql);
+            // $insert = $pdo->prepare($sql);
             
-            $insert->bindParam(':login', $input_login);
-            $insert->bindParam(':password', $hashed_password);
+            // $insert->bindParam(':login', $input_login);
+            // $insert->bindParam(':password', $hashed_password);
 
-            $insert->execute();
+            // $insert->execute();
 
             // header('Location: signin.php');
         }

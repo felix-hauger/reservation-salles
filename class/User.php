@@ -10,6 +10,7 @@ class User// extends DbConnection
     private $_id;
     private $_login;
     private $_password;
+    public Array $_errors = [];
 
     public function __construct(PDO $db, $login, $password)
     {
@@ -20,7 +21,18 @@ class User// extends DbConnection
 
     public function register()
     {
-        
+        if (self::isLoginInDb($this->_login, $this->_db)['bool'] === false) {
+            $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
+            $select = $this->_db->prepare($sql);
+
+            $options = ['cost' => 10];
+            $hashed_password = password_hash($this->_password, PASSWORD_DEFAULT, $options);
+
+            $select->bindParam(':login', $this->_login);
+            $select->bindParam(':password', $hashed_password);
+
+            $select->execute();
+        }
     }
     
     public function signIn()
@@ -30,12 +42,15 @@ class User// extends DbConnection
 
     public function checkCredentials()
     {
-        $sql = 'SELECT login, password FROM users WHERE login = :login';
-        $select = $this->_db->prepare($sql);
-        $select->bindParam(':login', $this->_login);
-        $select->execute();
+        
+        if (self::isLoginInDb($this->_login, $this->_pdo)['bool'] === true) {
+            $sql = 'SELECT login, password FROM users WHERE login = :login';
+            $select = $this->_db->prepare($sql);
 
-        if ($select->rowCount() > 0) {
+            $select->bindParam(':login', $this->_login);
+
+            $select->execute();
+
             $user_infos = $select->fetch(PDO::FETCH_OBJ);
             $submitted_pass = $this->_password;
             if ($submitted_pass === $user_infos->{'password'} || password_verify($this->_password, $user_infos->{'password'})) {
@@ -45,6 +60,10 @@ class User// extends DbConnection
         return false;
     }
 
+    public function getID() {
+        return $this->_id;
+    }
+    
     public function getLogin() {
         return $this->_login;
     }
@@ -59,6 +78,10 @@ class User// extends DbConnection
     
     public function setPassword($password) {
         $this->_password = $password;
+    }
+
+    public function getErrors() {
+        return $this->_errors;
     }
 
 
