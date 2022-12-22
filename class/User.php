@@ -3,12 +3,64 @@
 // construct($type, $db_name, $host, $login, $password)
 require_once 'DbConnection.php';
 
-class User
+class User// extends DbConnection
 {
 
-    private $login;
+    private $_db;
+    private $_id;
+    private $_login;
+    private $_password;
 
-    private $password;
+    public function __construct(PDO $db, $login, $password)
+    {
+        $this->_db = $db;
+        $this->_login = $login;
+        $this->_password = $password;
+    }
+
+    public function register()
+    {
+        
+    }
+    
+    public function signIn()
+    {
+
+    }
+
+    public function checkCredentials()
+    {
+        $sql = 'SELECT login, password FROM users WHERE login = :login';
+        $select = $this->_db->prepare($sql);
+        $select->bindParam(':login', $this->_login);
+        $select->execute();
+
+        if ($select->rowCount() > 0) {
+            $user_infos = $select->fetch(PDO::FETCH_OBJ);
+            $submitted_pass = $this->_password;
+            if ($submitted_pass === $user_infos->{'password'} || password_verify($this->_password, $user_infos->{'password'})) {
+                return $user_infos;
+            }
+        }
+        return false;
+    }
+
+    public function getLogin() {
+        return $this->_login;
+    }
+    
+    public function setLogin($login) {
+        $this->_login = $login;
+    }
+
+    public function getPassword() {
+        return $this->_password;
+    }
+    
+    public function setPassword($password) {
+        $this->_password = $password;
+    }
+
 
     public static function isLoginInDb($login, $pdo): array
     {
