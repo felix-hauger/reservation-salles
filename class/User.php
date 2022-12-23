@@ -106,10 +106,6 @@ class User // extends DbConnection
             $user_infos = $select->fetch(PDO::FETCH_OBJ);
             $submitted_pass = $this->_password;
             if ($submitted_pass === $user_infos->{'password'} || password_verify($this->_password, $user_infos->{'password'})) {
-                $toto = '_id';
-                var_dump($this);
-                echo $this->$toto;
-                echo 'toto';
                 return $user_infos;
             }
         }
@@ -151,26 +147,6 @@ class User // extends DbConnection
     public function getErrors()
     {
         return $this->_errors;
-    }
-
-/**
- * to update info in db
- * @param $info the info column to update
- */
-    public function updateInfo($info) 
-    {
-        $this->_id = $_SESSION['logged_user_id'];
-
-        $sql = 'UPDATE users SET ' . $info . '= :' . $info . 'WHERE id = :id';
-
-        $update = $this->_db->prepare($sql);
-
-        $param = '_' . $info;
-
-        $update->bindParam(':' . $info, $this->$param);
-        $update->bindParam(':id', $this->_id);
-
-        $update->execute();
     }
 
 
