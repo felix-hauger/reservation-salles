@@ -17,7 +17,7 @@ class Form
                 break;
             }
         }
-        
+
         return $result;
     }
 

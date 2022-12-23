@@ -85,8 +85,10 @@ class User // extends DbConnection
             echo $this->{'_id'};
             $_SESSION['logged_user_id'] = $this->{'_id'};
             return $this->{'_id'};
+        } else {
+            throw new Exception('Erreur : identifiants incorrects');
+            return false;
         }
-        return false;
     }
 
     /**
