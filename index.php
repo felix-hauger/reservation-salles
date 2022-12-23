@@ -1,12 +1,23 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+session_start();
+}
+var_dump($_SESSION);
 
 function test() {
     return false || false || true;
 }
 
 $test = test();
-
 var_dump($test);
+
+// $test_array = [];
+// $test_array[] = ['a' => 1];
+// var_dump($test_array);
+$test_array2 = [];
+$test_array2['a'] = 1;
+var_dump($test_array2);
+
 
 ?>
 
