@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
         // ENT_QUOTES to convert simple & double quotes
         $input_login = htmlspecialchars(trim($_POST['login']), ENT_QUOTES, 'UTF-8');
         $input_password = htmlspecialchars(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
-        $input_password_confirmation = htmlspecialchars(trim($_POST['password-confirmation']), ENT_QUOTES, 'UTF-8');
+        $input_password_confirm = htmlspecialchars(trim($_POST['password-confirmation']), ENT_QUOTES, 'UTF-8');
 
         require_once 'class/DbConnection.php';
         
@@ -41,11 +41,11 @@ if (isset($_POST['submit'])) {
         // }
 
         
-        // $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirmation);
+        // $passwords_are_equals = Form::passConfirm($input_password, $input_password_confirm);
         
         // var_dump($user_is_in_db, $passwords_are_equals);
 
-        if (Form::passConfirm($input_password, $input_password_confirmation)) {
+        if (Form::passConfirm($input_password, $input_password_confirm)) {
             $password_ok = true;
         } else {
             $password_ok = false;
