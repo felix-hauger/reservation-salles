@@ -9,7 +9,7 @@ require_once 'DbConnection.php';
  * Handles User service including register & login functions
  */
 
-class User// extends DbConnection
+class User // extends DbConnection
 {
     /**
      * @var PDO used to init connection to database
@@ -34,10 +34,10 @@ class User// extends DbConnection
     /**
      * @var array used to store errors from class methods
      */
-    private Array $_errors = [];
+    private array $_errors = [];
 
     /**
-     * @var object to store user infos
+     * @var object to store user infos (not yet used)
      */
     private $_infos;
 
@@ -51,7 +51,7 @@ class User// extends DbConnection
     /**
      * to register a new user to the database
      */
-    public function register()
+    public function register(): void
     {
         if (self::isLoginInDb($this->_login, $this->_db) === false) {
             $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
@@ -69,9 +69,10 @@ class User// extends DbConnection
             throw new Exception('Login déjà pris');
         }
     }
-    
+
     /**
      * for user to log in
+     * @return int $this->{'id'} or boolean false
      */
     public function signIn()
     {
@@ -79,9 +80,13 @@ class User// extends DbConnection
         // var_dump($user);
 
         if ($user) {
-           $this->setID($user->{'id'});
-           echo $this->getID();
+            $this->setID($user->{'id'});
+            echo $this->getID();
+            echo $this->{'_id'};
+            $_SESSION['logged_user_id'] = $this->{'_id'};
+            return $this->{'_id'};
         }
+        return false;
     }
 
     /**
@@ -90,7 +95,7 @@ class User// extends DbConnection
      */
     public function checkCredentials()
     {
-        
+
         if (self::isLoginInDb($this->_login, $this->_db)) {
             $sql = 'SELECT id, login, password FROM users WHERE login = :login';
             $select = $this->_db->prepare($sql);
@@ -111,31 +116,38 @@ class User// extends DbConnection
         return false;
     }
 
-    public function getID() {
+    public function getID()
+    {
         return $this->_id;
     }
 
-    public function setID($id) {
+    public function setID($id)
+    {
         $this->_id = $id;
     }
-    
-    public function getLogin() {
+
+    public function getLogin()
+    {
         return $this->_login;
     }
-    
-    public function setLogin($login) {
+
+    public function setLogin($login)
+    {
         $this->_login = $login;
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->_password;
     }
-    
-    public function setPassword($password) {
+
+    public function setPassword($password)
+    {
         $this->_password = $password;
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->_errors;
     }
 
@@ -183,15 +195,11 @@ class User// extends DbConnection
 
 // $pdo = $conn->pdo();
 
-// $test = User::isUserInDb('admin', $pdo);
+// $user = new User($pdo, 'admin', 'admin');
 
-// var_dump($test); // will return true or false
+// $user->register() return void
 
+// $user->signIn() return logged user id
 
-$conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+// $test = $user->isUserInDb('admin', $pdo); // method run in register() & checkCredentials() methods, will return true or false
 
-$pdo = $conn->pdo();
-
-$user = new User($pdo, 'admin', 'admin');
-
-$user->signIn();
