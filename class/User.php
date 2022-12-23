@@ -149,6 +149,26 @@ class User // extends DbConnection
         return $this->_errors;
     }
 
+/**
+ * to update info in db
+ * @param $info the info column to update
+ */
+    public function updateInfo($info) 
+    {
+        $this->_id = $_SESSION['logged_user_id'];
+
+        $sql = 'UPDATE users SET ' . $info . '= :' . $info . 'WHERE id = :id';
+
+        $update = $this->_db->prepare($sql);
+
+        $param = '_' . $info;
+
+        $update->bindParam(':' . $info, $this->$param);
+        $update->bindParam(':id', $this->_id);
+
+        $update->execute();
+    }
+
 
     /**
      * used to check if login already exists in database
