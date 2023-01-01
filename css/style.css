@@ -17,3 +17,7 @@ table th, table td {
 table tr:nth-child(odd) {
     background-color: #999;
 }
+
+.error {
+    color: red;
+}
