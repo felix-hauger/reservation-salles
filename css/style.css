@@ -21,3 +21,7 @@ table tr:nth-child(odd) {
 .error {
     color: red;
 }
+
+.success {
+    color: green;
+}

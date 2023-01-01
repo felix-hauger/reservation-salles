@@ -23,7 +23,7 @@ foreach ($week_days as $day) {
     $week_dates[] = $day_datetime;
 }
 
-// Planning
+// ------- Planning -----------
 
 require_once 'elements/dbconnect.php'; // require $pdo variable
 

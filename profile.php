@@ -56,6 +56,10 @@ if (isset($_POST['submit'])) {
             // $update_login->setLogin($input_login);
             $update_login->updateInfo('login');
             $_SESSION['logged_user_login'] = $input_login;
+            $login_update_msg = 'Login modifié avec succès !';
+            header('refresh: 3');
+        } else {
+            $errors['login'] = 'Le login est déjà pris.';
         }
 
     }
@@ -80,6 +84,11 @@ if (isset($_POST['submit'])) {
         <form action="" method="post">
             <input type="text" name="login" id="login" value="<?= $_SESSION['logged_user_login'] ?>" placeholder="Nouveau login">
             <input type="submit" name="submit" value="Modifier login">
+            <?php if (isset($errors['login'])): ?>
+                <p class="error"><?= $errors['login'] ?></p>
+            <?php elseif (isset($login_update_msg)): ?>
+                <p class="success"><?= $login_update_msg ?></p>
+            <?php endif ?>
         </form>
         <form action="" method="post">
             <input type="password" name="current-password" id="current-password" placeholder="Mot de Passe actuel">
