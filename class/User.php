@@ -34,7 +34,7 @@ class User // extends DbConnection
     /**
      * @var array used to store errors from class methods
      */
-    private array $_errors = [];
+    public array $_errors = [];
 
     /**
      * @var object to store user infos (not yet used)
@@ -110,7 +110,9 @@ class User // extends DbConnection
             }
         }
 
-        //$this->_errors['credentials'] = 'Identifiants incorrects.'; 
+        // throw new Exception('Erreur : id incorrects');
+
+        $this->_errors['credentials'] = 'Identifiants incorrects.'; 
         return false;
     }
 
@@ -157,7 +159,7 @@ class User // extends DbConnection
     {
         $this->_id = $_SESSION['logged_user_id'];
 
-        $sql = 'UPDATE users SET ' . $info . '= :' . $info . 'WHERE id = :id';
+        $sql = 'UPDATE users SET ' . $info . ' = :' . $info . ' WHERE id = :id';
 
         $update = $this->_db->prepare($sql);
 
