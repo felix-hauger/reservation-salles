@@ -149,11 +149,11 @@ class User // extends DbConnection
         return $this->_errors;
     }
 
-/**
- * to update info in db
- * @param $info the info column to update
- */
-    public function updateInfo($info) 
+    /**
+     * to update info in db
+     * @param $info the info column to update
+     */
+    public function updateInfo($info)
     {
         $this->_id = $_SESSION['logged_user_id'];
 
@@ -206,6 +206,14 @@ class User // extends DbConnection
 
         return $result;
     }
+
+
+    public function logOut()
+    {
+        unset($_SESSION['logged_user_id']);
+        unset($_SESSION['logged_user_login']);
+        header('Location: index.php');
+    }
 }
 
 // EXEMPLE
@@ -221,4 +229,3 @@ class User // extends DbConnection
 // $user->signIn() return logged user id
 
 // $test = $user->isUserInDb('admin', $pdo); // method run in register() & checkCredentials() methods, will return true or false
-
