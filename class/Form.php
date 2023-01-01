@@ -3,7 +3,7 @@
 class Form
 {
 
-    private static Array $_errors = [];
+    public static Array $_errors = [];
 
     public static function areAllPostsFilled(): bool
     {
@@ -39,7 +39,8 @@ class Form
             $result = true;
         } else {
             $result = false;
-            self::$_errors['password'] = 'Champs des Mots de Passe différents.';
+            static::$_errors['password'] = 'Champs des Mots de Passe différents.';
+            // throw new Exception('Champs des Mots de Passe différents.');
         }
 
         return $result;
