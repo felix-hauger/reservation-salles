@@ -53,7 +53,7 @@ class User // extends DbConnection
      */
     public function register(): void
     {
-        if (self::isLoginInDb($this->_login, $this->_db) === false) {
+        if (self::isLoginInDb() === false) {
             $sql = 'INSERT INTO users (login, password) VALUES (:login, :password)';
             $select = $this->_db->prepare($sql);
 
@@ -95,7 +95,7 @@ class User // extends DbConnection
     public function checkCredentials()
     {
 
-        if (self::isLoginInDb($this->_login, $this->_db)) {
+        if (self::isLoginInDb()) {
             $sql = 'SELECT id, login, password FROM users WHERE login = :login';
             $select = $this->_db->prepare($sql);
 
@@ -177,15 +177,16 @@ class User // extends DbConnection
      * @param $login string 
      * @param $pdo PDO
      */
-    public static function isLoginInDb($login, $pdo): bool
+    public function isLoginInDb(): bool
     {
         // count number of rows
         $sql = 'SELECT COUNT(id) FROM users WHERE login LIKE :login';
+        
 
-        $select = $pdo->prepare($sql);
+        $select = $this->_db->prepare($sql);
 
         $select->execute([
-            ':login' => $login
+            ':login' => $this->_login
         ]);
 
         // get the COUNT(id) property with fetched object format
