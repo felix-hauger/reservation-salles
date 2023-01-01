@@ -8,27 +8,23 @@
 $errors = [];
 $form_error = null;
 if (isset($_POST['submit'])) {
-    require_once 'functions/form_functions.php';
     require_once 'class/Form.php';
-    require_once 'class/User.php';
-
-    $all_inputs_filled = Form::areAllPostsFilled();
-
+    
+    // $all_inputs_filled = Form::areAllPostsFilled();
+    
     // var_dump($all_inputs_filled);
-
-    if ($all_inputs_filled) {
-
+    
+    if (Form::areAllPostsFilled()) {
+        
         // ENT_QUOTES to convert simple & double quotes
         $input_login = htmlspecialchars(trim($_POST['login']), ENT_QUOTES, 'UTF-8');
         $input_password = htmlspecialchars(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
         $input_password_confirm = htmlspecialchars(trim($_POST['password-confirmation']), ENT_QUOTES, 'UTF-8');
-
-        require_once 'class/DbConnection.php';
         
-        // construct($type, $db_name, $host, $login, $password)
-        $conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+        require_once 'class/User.php';
+        require_once 'class/DbConnection.php';
 
-        $pdo = $conn->pdo();
+        require_once 'elements/dbconnect.php'; // require $pdo variable
 
         $create_user = new User($pdo, $input_login, $input_password);
 

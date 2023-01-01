@@ -17,7 +17,7 @@ $week_dates = [];
 
 // convert week days using datetime for the current week, set min hour -1 & timezone then append it to $week_dates array
 foreach ($week_days as $day) {
-    $day_datetime = new DateTime($day . ' this week 7am');
+    $day_datetime = new DateTime($day . ' next week 7am');
     $timezone = new DateTimeZone('Europe/Paris');
     $day_datetime->setTimezone($timezone);
     $week_dates[] = $day_datetime;
@@ -25,9 +25,11 @@ foreach ($week_days as $day) {
 
 // Planning
 
-$connect = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+require_once 'elements/dbconnect.php'; // require $pdo variable
 
-$pdo = $connect->pdo();
+// $connect = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
+
+// $pdo = $connect->pdo();
 
 $sql = 'SELECT bookings.id, title, description, start, end, login as user FROM bookings INNER JOIN users ON bookings.user_id = users.id';
 

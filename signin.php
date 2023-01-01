@@ -7,15 +7,13 @@ if (isset($_POST['submit'])) {
     require_once 'class/Form.php';
     
     if (Form::areAllPostsFilled()) {
-        require_once 'class/DbConnection.php';
         require_once 'class/User.php';
+        require_once 'class/DbConnection.php';
 
         $input_login = htmlspecialchars(trim($_POST['login']), ENT_QUOTES, 'UTF-8');
         $input_password = htmlspecialchars(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
 
-        $conn = new DbConnection('mysql', 'reservationsalles', 'localhost', 'root', '');
-
-        $pdo = $conn->pdo();
+        require_once 'elements/dbconnect.php'; // require $pdo variable
 
         $log_user = new User($pdo, $input_login, $input_password);
 
