@@ -18,14 +18,13 @@ $errors = [];
 if (isset($_POST['submit'])) {
     // $password = '';
     var_dump($_POST);
+    
     if (isset($_POST['new-password']) ) {
         $input_current_password = htmlspecialchars(trim($_POST['current-password']));
         $input_new_password = htmlspecialchars(trim($_POST['new-password']));
         $input_password_confirm = htmlspecialchars(trim($_POST['password-confirmation']));
 
-        $logged_user = $_SESSION['logged_user_login'];
-
-        $update_user = new User($pdo, $logged_user, $input_current_password);
+        $update_user = new User($pdo, $_SESSION['logged_user_login'], $input_current_password);
 
         $current_pw_ok = $update_user->checkCredentials();
 
@@ -49,8 +48,16 @@ if (isset($_POST['submit'])) {
             }
         }
 
-    } else {
-        
+    } elseif (isset($_POST['login'])) {
+        $input_login = htmlspecialchars(trim($_POST['login']));
+        $update_login = new User($pdo, $input_login, null);
+
+        if (!$update_login->isLoginInDb()) {
+            // $update_login->setLogin($input_login);
+            $update_login->updateInfo('login');
+            $_SESSION['logged_user_login'] = $input_login;
+        }
+
     }
 }
 
