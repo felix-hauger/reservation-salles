@@ -16,7 +16,8 @@ function get_booking() {
         $id = $_GET['id'];
         
         var_dump(preg_match('/^[0-9]$/', $_GET['id']));
-    
+
+        // test if id is a number
         if (preg_match('/^[0-9]$/', $_GET['id'])) {
             require_once 'class/DbConnection.php';
             require_once 'elements/dbconnect.php'; // this require $pdo variable
@@ -35,7 +36,6 @@ function get_booking() {
     
             return $booking;
         }
-        
         
     }
 }
@@ -61,7 +61,13 @@ var_dump($booking);
     <?php require_once 'elements/header.php' ?>
 
     <main>
-
+        <div id="booking">
+            <p>Nom de l'évènement : <?= $booking['title'] ?></p>
+            <p>Réservé par : <?= $booking['login'] ?></p>
+            <p>Description : <?= $booking['description'] ?></p>
+            <p>Début de la réservation : <?= $booking['start'] ?></p>
+            <p>Fin de la réservation : <?= $booking['end'] ?></p>
+        </div>
     </main>
 
     <?php require_once 'elements/footer.php' ?>
