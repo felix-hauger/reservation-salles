@@ -13,24 +13,19 @@ var_dump($min_date);
 // $min_date = $min_date . ':00';
 // var_dump($min_date);
 
-function create_booking($title, $description, $start, $end) {
-    require_once 'class/DbConnection.php';
-    require_once 'elements/dbconnect.php';
+if (isset($_POST['submit'])) {
+    var_dump($_POST);
 
-    // $sql = 'SELECT start, end FROM bookings';
+    $title = $_POST['title'];
+    $date = $_POST['date'];
+    $start_hour = $_POST['start-hour'];
+    $end_hour = $_POST['end-hour'];
+    $description = $_POST['description'];
 
-    // if ()
-
-    $sql = 'INSERT INTO bookings (title, description, start, end) VALUES (:title, :description, :start, :end)';
-
-    $insert = $pdo->prepare($sql);
-
-    $insert->bindParam(':title', $title);
-    $insert->bindParam(':description', $description);
-    $insert->bindParam(':start', $start);
-    $insert->bindParam(':end', $end);
-
-    $insert->execute();
+    $start = new DateTime($date . ' ' . $start_hour . ':00:00');
+    $end = new DateTime($date . ' ' . $end_hour . ':00:00');
+    var_dump($start, $end);
+    
 }
 
 
