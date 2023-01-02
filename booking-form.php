@@ -1,9 +1,18 @@
 <?php
+session_start();
+
+var_dump($_SESSION);
+
+if (!isset($_SESSION['is_logged'])) {
+    header('Location: signin.php');
+    die();
+}
 $min_date_time = new DateTime('now');
 $min_date = $min_date_time->format('Y-m-d');
 var_dump($min_date);
 // $min_date = $min_date . ':00';
 // var_dump($min_date);
+
 ?>
 
 <!DOCTYPE html>

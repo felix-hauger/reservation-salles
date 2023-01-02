@@ -2,6 +2,11 @@
 
 session_start();
 
+if (!isset($_SESSION['is_logged'])) {
+    header('Location: signin.php');
+    die();
+}
+
 function get_booking()
 {
     if (isset($_GET['id'])) {
