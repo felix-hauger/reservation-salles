@@ -27,3 +27,19 @@ function get_booking()
         }
     }
 }
+
+function create_booking($title, $description, $start, $end) {
+    require_once 'class/DbConnection.php';
+    require_once 'elements/dbconnect.php';
+
+    $sql = 'INSERT INTO bookings (title, description, start, end) VALUES (:title, :description, :start, :end)';
+
+    $insert = $pdo->prepare($sql);
+
+    $insert->bindParam(':title', $title);
+    $insert->bindParam(':description', $description);
+    $insert->bindParam(':start', $start);
+    $insert->bindParam(':end', $end);
+
+    $insert->execute();
+}
