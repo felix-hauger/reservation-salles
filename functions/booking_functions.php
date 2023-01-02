@@ -32,7 +32,7 @@ function create_booking($title, $description, $start, $end) {
     require_once 'class/DbConnection.php';
     require_once 'elements/dbconnect.php';
 
-    $sql = 'INSERT INTO bookings (title, description, start, end) VALUES (:title, :description, :start, :end)';
+    $sql = 'INSERT INTO bookings (title, description, start, end, user_id) VALUES (:title, :description, :start, :end, :user_id)';
 
     $insert = $pdo->prepare($sql);
 
@@ -40,6 +40,7 @@ function create_booking($title, $description, $start, $end) {
     $insert->bindParam(':description', $description);
     $insert->bindParam(':start', $start);
     $insert->bindParam(':end', $end);
+    $insert->bindParam(':user_id', $_SESSION['logged_user_id']);
 
     $insert->execute();
 }
