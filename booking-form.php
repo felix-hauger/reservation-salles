@@ -8,8 +8,8 @@ if (!isset($_SESSION['is_logged'])) {
     die();
 }
 $min_date_time = new DateTime('now');
-$min_date = $min_date_time->format('Y-m-d');
-var_dump($min_date);
+// $min_date = $min_date_time->format('Y-m-d');
+// var_dump($min_date);
 // $min_date = $min_date . ':00';
 // var_dump($min_date);
 
@@ -17,15 +17,28 @@ if (isset($_POST['submit'])) {
     var_dump($_POST);
 
     $title = $_POST['title'];
+    $description = $_POST['description'];
     $date = $_POST['date'];
     $start_hour = $_POST['start-hour'];
     $end_hour = $_POST['end-hour'];
-    $description = $_POST['description'];
 
     $start = new DateTime($date . ' ' . $start_hour . ':00:00');
     $end = new DateTime($date . ' ' . $end_hour . ':00:00');
     var_dump($start, $end);
     
+    $timezone = new DateTimeZone('Europe/Paris');
+    
+    $start->setTimezone($timezone);
+    $end->setTimezone($timezone);
+    var_dump($start, $end);
+
+    $start = $start->format('Y-m-d h:i:s');
+    $end = $end->format('Y-m-d h:i:s');
+    var_dump($start, $end);
+    
+    require_once 'functions/booking_functions.php';
+
+    create_booking($title, $description, $start, $end);
 }
 
 
