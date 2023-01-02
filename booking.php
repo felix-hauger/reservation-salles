@@ -2,7 +2,8 @@
 
 session_start();
 
-function get_booking() {
+function get_booking()
+{
     if (isset($_GET['id'])) {
 
         $id = $_GET['id'];
@@ -11,22 +12,21 @@ function get_booking() {
         if (preg_match('/^[0-9]$/', $_GET['id'])) {
             require_once 'class/DbConnection.php';
             require_once 'elements/dbconnect.php'; // this require $pdo variable
-            
+
             $sql = 'SELECT bookings.id, title, description, start, end, users.login FROM bookings INNER JOIN users ON bookings.user_id = users.id WHERE bookings.id = :id';
-            
+
             $select = $pdo->prepare($sql);
-            
+
             // $id = htmlspecialchars(trim($_GET['id']), ENT_QUOTES);
-            
+
             $select->bindParam(':id', $id);
-            
+
             $select->execute();
 
             $booking = $select->fetch(PDO::FETCH_ASSOC);
 
             return $booking;
         }
-        
     }
 }
 
@@ -41,12 +41,14 @@ if (!$booking = get_booking()) {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $booking['title'] ?> | Réservation Salle</title>
 </head>
+
 <body>
     <?php require_once 'elements/header.php' ?>
 
@@ -62,4 +64,5 @@ if (!$booking = get_booking()) {
 
     <?php require_once 'elements/footer.php' ?>
 </body>
+
 </html>
