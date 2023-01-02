@@ -4,18 +4,8 @@ session_start();
 
 function get_booking() {
     if (isset($_GET['id'])) {
-        var_dump($_SESSION, $_GET);
-    
-        echo $_GET['id'] . '<br />';
-        echo gettype($_GET['id']) . '<br />';
-        echo (int) $_GET['id'] . '<br />';
-        echo gettype( (int) $_GET['id']) . '<br />';
-        
-        var_dump(is_numeric($_GET['id']));
-    
+
         $id = $_GET['id'];
-        
-        var_dump(preg_match('/^[0-9]$/', $_GET['id']));
 
         // test if id is a number
         if (preg_match('/^[0-9]$/', $_GET['id'])) {
@@ -31,9 +21,9 @@ function get_booking() {
             $select->bindParam(':id', $id);
             
             $select->execute();
-            
+
             $booking = $select->fetch(PDO::FETCH_ASSOC);
-    
+
             return $booking;
         }
         
@@ -46,7 +36,7 @@ if (!$booking = get_booking()) {
     die();
 }
 
-var_dump($booking);
+// var_dump($booking);
 ?>
 
 <!DOCTYPE html>
