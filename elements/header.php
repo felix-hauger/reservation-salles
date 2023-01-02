@@ -5,6 +5,7 @@
             <li><a href="index.php">Accueil</a></li>
             <li><a href="signup.php">Inscription</a></li>
             <li><a href="signin.php">Connexion</a></li>
+            <li><a href="signout.php">Déconnexion</a></li>
             <li><a href="profile.php">Profil</a></li>
             <li><a href="planning.php">Planning</a></li>
             <li><a href="booking.php">Liste des Réservations</a></li>
