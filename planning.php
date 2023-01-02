@@ -17,7 +17,7 @@ $week_dates = [];
 
 // convert week days using datetime for the current week, set min hour -1 & timezone then append it to $week_dates array
 foreach ($week_days as $day) {
-    $day_datetime = new DateTime($day . ' next week 7am');
+    $day_datetime = new DateTime($day . ' this week 7am');
     $timezone = new DateTimeZone('Europe/Paris');
     $day_datetime->setTimezone($timezone);
     $week_dates[] = $day_datetime;
