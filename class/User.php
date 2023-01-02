@@ -79,6 +79,7 @@ class User // extends DbConnection
         $user = $this->checkCredentials();
 
         if ($user) {
+            $_SESSION['is_logged'] = true;
             $_SESSION['logged_user_id'] = $user->{'id'};
             $_SESSION['logged_user_login'] = $user->{'login'};
             return $user->{'id'};
